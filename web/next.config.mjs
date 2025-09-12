@@ -7,6 +7,7 @@ const isUserPages = repo ? repo.toLowerCase().endsWith('.github.io') : false
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  trailingSlash: true,
   images: { unoptimized: true },
   ...(isGhPages && repo && !isUserPages
     ? {
