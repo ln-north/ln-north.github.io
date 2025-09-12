@@ -1,0 +1,21 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+
+# Web app
+web/node_modules/
+web/.next/
+web/out/
+
+# Jekyll
+.jekyll-cache/
+.sass-cache/
+_site/
+content/.jekyll-metadata
+content/_site/
+content/vendor/
+
+# macOS
+.DS_Store
+

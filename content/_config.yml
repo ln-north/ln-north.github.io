@@ -1,0 +1,12 @@
+title: "ブログ"
+timezone: Asia/Tokyo
+plugins:
+  - jekyll-feed
+
+# 最小限の設定。必要に応じて拡張してください。
+markdown: kramdown
+exclude:
+  - vendor
+  - node_modules
+permalink: /:categories/:title/
+
