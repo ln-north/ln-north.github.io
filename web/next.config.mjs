@@ -1,20 +1,10 @@
-/** @type {import('next').NextConfig} */
-const isGhPages = process.env.GITHUB_PAGES === 'true'
-const repo = process.env.GITHUB_REPOSITORY?.split('/').pop()
-const isUserPages = repo ? repo.toLowerCase().endsWith('.github.io') : false
+const isGH = process.env.GITHUB_PAGES === "true";
+const customDomain = process.env.CUSTOM_DOMAIN === "true";
+const repo = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  output: 'export',
-  trailingSlash: true,
+export default {
+  output: "export",
   images: { unoptimized: true },
-  ...(isGhPages && repo && !isUserPages
-    ? {
-        basePath: `/${repo}`,
-        assetPrefix: `/${repo}/`
-      }
-    : {})
-}
-
-export default nextConfig
+  basePath: customDomain ? undefined : (isGH && repo ? `/${repo}` : undefined),
+  assetPrefix: customDomain ? undefined : (isGH && repo ? `/${repo}/` : undefined),
+};
