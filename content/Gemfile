@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.3"
+# Pin to Jekyll 4.2 to avoid sass-embedded (google-protobuf) issues on older Rubies
+gem "jekyll", "~> 4.2.2"
 gem "jekyll-feed", "~> 0.17"
-
