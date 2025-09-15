@@ -1,31 +1,39 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import React from 'react'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { getAllSlugs, getPostBySlug, type Post } from '../lib/posts'
+import { formatDateYYYYMD, isoDateJST } from '../lib/formatDate'
+import { loadDefaultJapaneseParser } from 'budoux'
 
 type Props = {
   post: Post
 }
 
 export default function PostPage({ post }: Props) {
+  const parser = loadDefaultJapaneseParser()
+  const titleChunks = parser.parse(post.title)
   return (
     <>
       <Head>
         <title>{post.title}</title>
       </Head>
-      <main style={{ maxWidth: 760, margin: '2rem auto', padding: '0 1rem' }}>
-        <p>
-          <Link href="/">← 戻る</Link>
-        </p>
-        <h1>{post.title}</h1>
-        <div style={{ color: '#666', fontSize: '0.9rem' }}>
-          <time dateTime={post.date}>{new Date(post.date).toLocaleString('ja-JP')}</time>
-          {post.tags?.length ? <> ・ タグ: {post.tags.join(', ')}</> : null}
-        </div>
-        <article
-          style={{ marginTop: '1rem' }}
-          dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
-        />
+      <main className="container">
+        <header className="post-header">
+          <h1>
+            {titleChunks.map((c, i) => (
+              <React.Fragment key={i}>
+                {c}
+                {i < titleChunks.length - 1 ? <wbr /> : null}
+              </React.Fragment>
+            ))}
+          </h1>
+          <div className="meta">
+            <time dateTime={isoDateJST(post.date)}>{formatDateYYYYMD(post.date)}</time>
+            {post.tags?.length ? <> ・ {post.tags.join(', ')}</> : null}
+          </div>
+        </header>
+        <article className="post-article" dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }} />
       </main>
     </>
   )
@@ -45,4 +53,3 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   if (!post) return { notFound: true }
   return { props: { post } }
 }
-
