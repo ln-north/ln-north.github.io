@@ -7,16 +7,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <script
-          src="https://font.realtype.jp/api/script/v4"
-          data-rt-user="b7ph2luyQ8EDyLcZRuXK9TrifUn3zZFT"
-          data-rt-input="true"
-          data-rt-nofliker="true"
-          data-rt-layout="true"
-          data-rt-cache="true"
-        />
       </body>
     </Html>
   )
 }
-
