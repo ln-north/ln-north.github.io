@@ -4,19 +4,44 @@ import React from 'react'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { getAllSlugs, getPostBySlug, type Post } from '../lib/posts'
 import { formatDateYYYYMD, isoDateJST } from '../lib/formatDate'
+import { buildSiteUrl, SITE_DESCRIPTION, SITE_NAME } from '../lib/config'
 import { loadDefaultJapaneseParser } from 'budoux'
 
 type Props = {
   post: Post
 }
 
+function toMetaDescription(raw?: string): string {
+  if (!raw) return SITE_DESCRIPTION
+  const text = raw
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+    .replace(/[`*_>#]/g, '')
+    .replace(/\r?\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const truncated = text.slice(0, 140)
+  return truncated || SITE_DESCRIPTION
+}
+
 export default function PostPage({ post }: Props) {
   const parser = loadDefaultJapaneseParser()
   const titleChunks = parser.parse(post.title)
+  const metaDescription = toMetaDescription(post.excerpt)
+  const metaTitle = `${post.title}｜${SITE_NAME}`
+  const canonicalUrl = buildSiteUrl(`/${post.slug}`)
   return (
     <>
       <Head>
         <title>{post.title}</title>
+        <meta name="description" content={metaDescription} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
       </Head>
       <main className="container">
         <header className="post-header">

@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import Link from 'next/link'
+import { SITE_NAME } from '../lib/config'
 import '../styles/globals.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -21,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <header className="site-header">
         <Link href="/" className="site-header__title" aria-label="トップへ">
-          えるえぬのメモ帳
+          {SITE_NAME}
         </Link>
       </header>
       <Component {...pageProps} />

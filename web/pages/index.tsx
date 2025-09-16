@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import type { GetStaticProps } from 'next'
 import { getAllPostsMeta, getPostBySlug, type PostMeta } from '../lib/posts'
 import { formatDateYYYYMD, isoDateJST } from '../lib/formatDate'
-import { TAG_ORDER } from '../lib/config'
+import { TAG_ORDER, SITE_DESCRIPTION, SITE_NAME, buildSiteUrl } from '../lib/config'
 
 type Props = {
   posts: PostMeta[]
@@ -24,6 +24,9 @@ function isSameMonthJST(iso: string, ref = new Date()): boolean {
 
 export default function Home({ posts, diaryContentBySlug }: Props) {
   const router = useRouter()
+  const pageTitle = SITE_NAME
+  const metaTitle = SITE_NAME
+  const canonicalUrl = buildSiteUrl('/')
   const onRowActivate = (e: React.MouseEvent | React.KeyboardEvent, slug: string) => {
     // If clicking an inner link, do nothing
     const target = e.target as Element
@@ -54,7 +57,16 @@ export default function Home({ posts, diaryContentBySlug }: Props) {
   return (
     <>
       <Head>
-        <title>ブログ</title>
+        <title>{pageTitle}</title>
+        <meta name="description" content={SITE_DESCRIPTION} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={SITE_DESCRIPTION} />
       </Head>
       <main className="container">
         {tags.map((tag) => (
