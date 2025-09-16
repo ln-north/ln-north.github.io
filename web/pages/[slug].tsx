@@ -27,7 +27,9 @@ export default function PostPage({ post }: Props) {
   const parser = loadDefaultJapaneseParser()
   const titleChunks = parser.parse(post.title)
   const metaDescription = toMetaDescription(post.excerpt)
-  const metaTitle = `${post.title}｜${SITE_NAME}`
+  const isDiaryPost = (post.tags || []).includes('日記')
+  const diaryPrefix = isDiaryPost ? `${formatDateYYYYMD(post.date)}「${post.title}」` : post.title
+  const metaTitle = `${diaryPrefix}｜${SITE_NAME}`
   const canonicalUrl = buildSiteUrl(`/${post.slug}`)
   return (
     <>
